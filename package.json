@@ -1,0 +1,26 @@
+{
+  "name": "rx-pubsub",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Yong Wang <yongwangd@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/pubsub": "^0.18.0",
+    "ramda": "^0.25.0",
+    "rxjs": "^6.2.1",
+    "@types/jest": "^22.2.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0-beta.49",
+    "@babel/preset-env": "^7.0.0-beta.49",
+    "babel-core": "^7.0.0-0",
+    "babel-jest": "^23.0.1",
+    "jest": "^23.1.0",
+    "regenerator-runtime": "^0.11.1"
+  }
+}
