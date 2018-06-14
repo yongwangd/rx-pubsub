@@ -1,6 +1,15 @@
-// Imports the Google Cloud client library
 const PubSub = require('@google-cloud/pubsub');
-const { Subject, Observable } = require('rxjs/Rx');
+const { Observable } = require('rxjs/Rx');
+
+function getJSON(str) {
+  let parsed = '';
+  try {
+    parsed = JSON.parse(str);
+  } catch (e) {
+    return str;
+  }
+  return parsed;
+}
 
 const cloudPublisher = (projectId, secret) => {
   const pubsubClient = new PubSub({
@@ -8,7 +17,7 @@ const cloudPublisher = (projectId, secret) => {
   });
 
   const createTopic = topicName => pubsubClient.createTopic(topicName);
-  const publish = (topName, data) => {
+  const publish = (topicName, data) => {
     const dataBuffer = Buffer.from(
       typeof data == 'string' ? data : JSON.stringify(data)
     );
@@ -25,42 +34,31 @@ const cloudPublisher = (projectId, secret) => {
   };
 };
 
-const cloudSubscriber = (projectId, secret) => {
+const cloudSubscriber = (projectId, subscriptionName) => {
   const pubsubClient = new PubSub({
     projectId
   });
+  const subscription = pubsubClient.subscription(subscriptionName);
 
-  const onTopic = name => {
-    const subscription = pubsubClient.subscription(name);
-    return Observable.fromEvent(subscription, 'message');
+  const message$ = Observable.fromEvent(subscription, 'message');
+
+  const newMessages = () => {
+    const now = Date.now();
+    return message$
+      .filter(msg => Date.parse(msg.publishTime) > now)
+      .map(msg => {
+        msg.ack();
+        return getJSON(msg.data.toString());
+      });
   };
 
-  return {
-    onTopic
-  };
+  const allMessages = () =>
+    message$.map(msg => {
+      msg.ack();
+      return getJSON(msg.data.toString());
+    });
+  return { newMessages, allMessages };
 };
 
 module.exports.cloudPublisher = cloudPublisher;
 module.exports.cloudSubscriber = cloudSubscriber;
-
-// Your Google Cloud Platform project ID
-// const projectId = 'rx-pubsub';
-
-// // Instantiates a client
-// const pubsubClient = new PubSub({
-//   projectId: projectId
-// });
-
-// // The name for the new topic
-// const topicName = 'universe';
-
-// // Creates the new topic
-// pubsubClient
-//   .createTopic(topicName)
-//   .then(results => {
-//     const topic = results[0];
-//     console.log(`Topic ${topic.name} created.`);
-//   })
-//   .catch(err => {
-//     console.error('ERROR:', err);
-//   });

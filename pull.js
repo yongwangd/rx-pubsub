@@ -20,7 +20,7 @@ let messageCount = 0;
 const messageHandler = message => {
   console.log(`Received message ${message.id}:`);
   console.log(`\tData: ${message.data}`);
-  console.log(`\tAttributes: ${message.attributes}`);
+  console.log(`\tAttributes: ${JSON.stringify(message.attributes)}`);
   messageCount += 1;
 
   // "Ack" (acknowledge receipt of) the message
@@ -34,3 +34,18 @@ setTimeout(() => {
   subscription.removeListener('message', messageHandler);
   console.log(`${messageCount} message(s) received.`);
 }, timeout * 1000);
+
+// const { cloudPublisher, cloudSubscriber } = require('./index');
+
+// let sub = cloudSubscriber('rx-pubsub', 'gpc-mac').subscribe(message =>
+//   console.log(
+//     'received message',
+//     JSON.stringify(message),
+//     message.data,
+//     message.data.toString()
+//   )
+// );
+
+// cloudPublisher('rx-pubsub').publish('universe', {
+//   hello: 'will this scale, yes it test again-----willl---'
+// });

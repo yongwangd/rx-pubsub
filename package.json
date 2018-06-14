@@ -1,6 +1,6 @@
 {
-  "name": "rx-pubsub",
-  "version": "1.0.0",
+  "name": "rx-cloud-pubsub",
+  "version": "1.1.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,16 +11,9 @@
   "license": "ISC",
   "dependencies": {
     "@google-cloud/pubsub": "^0.18.0",
-    "ramda": "^0.25.0",
-    "rxjs": "^6.2.1",
-    "@types/jest": "^22.2.3"
+    "rxjs": "^6.2.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0-beta.49",
-    "@babel/preset-env": "^7.0.0-beta.49",
-    "babel-core": "^7.0.0-0",
-    "babel-jest": "^23.0.1",
-    "jest": "^23.1.0",
-    "regenerator-runtime": "^0.11.1"
+    "rxjs-compat": "^6.2.1"
   }
 }
